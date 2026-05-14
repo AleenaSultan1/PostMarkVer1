@@ -32,12 +32,14 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.postmark.R
 import com.example.postmark.ui.theme.InkBlack
 import com.example.postmark.ui.theme.MutedStone
 import com.example.postmark.ui.theme.Parchment
@@ -66,7 +68,6 @@ fun LoginScreen(
         ) {
             Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
 
-                // "Par Avion" stamp — angled to feel hand-applied
                 Box(
                     modifier = Modifier
                         .rotate(-3f)
@@ -74,13 +75,13 @@ fun LoginScreen(
                         .background(ParchmentDark)
                         .padding(horizontal = 24.dp, vertical = 8.dp)
                 ) {
-                    Text("PAR AVION", style = MaterialTheme.typography.labelLarge, color = MutedStone)
+                    Text(stringResource(R.string.par_avion), style = MaterialTheme.typography.labelLarge, color = MutedStone)
                 }
 
                 Spacer(Modifier.height(24.dp))
-                Text("Postmark", style = MaterialTheme.typography.displayLarge, color = InkBlack)
+                Text(stringResource(R.string.app_name), style = MaterialTheme.typography.displayLarge, color = InkBlack)
                 Text(
-                    "your travels, stamped in time",
+                    stringResource(R.string.login_subtext),
                     style = MaterialTheme.typography.bodyMedium.copy(fontStyle = FontStyle.Italic),
                     color = MutedStone
                 )
@@ -93,7 +94,7 @@ fun LoginScreen(
                     exit = fadeOut() + shrinkVertically()
                 ) {
                     Column {
-                        FieldLabel("Name")
+                        FieldLabel(stringResource(R.string.name_field))
                         OutlinedTextField(
                             value = state.name,
                             onValueChange = vm::onNameChange,
@@ -103,7 +104,7 @@ fun LoginScreen(
                             colors = inkColors(),
                             placeholder = {
                                 Text(
-                                    "As you'd like it to appear",
+                                    stringResource(R.string.name_field_desc),
                                     color = MutedStone.copy(alpha = 0.5f),
                                     fontSize = 14.sp
                                 )
@@ -113,7 +114,7 @@ fun LoginScreen(
                     }
                 }
 
-                FieldLabel("Email")
+                FieldLabel(stringResource(R.string.email_field))
                 OutlinedTextField(
                     value = state.email,
                     onValueChange = vm::onEmailChange,
@@ -124,7 +125,7 @@ fun LoginScreen(
                 )
                 Spacer(Modifier.height(20.dp))
 
-                FieldLabel("Password")
+                FieldLabel(stringResource(R.string.password_field))
                 OutlinedTextField(
                     value = state.password,
                     onValueChange = vm::onPasswordChange,
@@ -145,7 +146,9 @@ fun LoginScreen(
                 Button(
                     onClick = { if (state.isRegistering) vm.register() else vm.login() },
                     enabled = !state.loading,
-                    modifier = Modifier.fillMaxWidth().height(52.dp),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(52.dp),
                     shape = RoundedCornerShape(8.dp),
                     colors = ButtonDefaults.buttonColors(containerColor = InkBlack, contentColor = Parchment),
                     contentPadding = PaddingValues()
@@ -156,7 +159,9 @@ fun LoginScreen(
                         strokeWidth = 2.dp
                     )
                     else Text(
-                        if (state.isRegistering) "CREATE ACCOUNT" else "LOGIN",
+                        if (state.isRegistering) stringResource(R.string.create_account_btn) else stringResource(
+                            R.string.login_btn
+                        ),
                         letterSpacing = 2.sp,
                         fontSize = 13.sp
                     )
@@ -165,7 +170,9 @@ fun LoginScreen(
                 Spacer(Modifier.height(16.dp))
 
                 Text(
-                    text = if (state.isRegistering) "Already have an account? Login" else "Don't have an account? Register",
+                    text = if (state.isRegistering) stringResource(R.string.login_option) else stringResource(
+                        R.string.register_option
+                    ),
                     style = MaterialTheme.typography.bodyMedium,
                     color = InkBlack,
                     modifier = Modifier
@@ -175,7 +182,7 @@ fun LoginScreen(
             }
 
             Text(
-                "\"the world is a book, and those who do not travel read only one page\"",
+                stringResource(R.string.login_quote),
                 style = MaterialTheme.typography.bodyMedium.copy(fontStyle = FontStyle.Italic),
                 color = MutedStone,
                 fontSize = 12.sp,

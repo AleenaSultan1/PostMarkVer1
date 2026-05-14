@@ -36,10 +36,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
+import com.example.postmark.R
 import com.example.postmark.ui.components.formatIsoDate
 import com.example.postmark.ui.list.EntriesViewModel
 import com.example.postmark.ui.theme.InkBlack
@@ -57,26 +59,33 @@ fun EntryDetailScreen(
     val entry = entries.firstOrNull { it.id == entryId }
     var confirmDelete by remember { mutableStateOf(false) }
 
-    Box(modifier = Modifier.fillMaxSize().background(Parchment)) {
+    Box(modifier = Modifier
+        .fillMaxSize()
+        .background(Parchment)) {
         Column(modifier = Modifier.fillMaxSize()) {
 
             Row(
-                modifier = Modifier.fillMaxWidth().padding(horizontal = 8.dp, vertical = 8.dp).padding(top = 40.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 8.dp, vertical = 8.dp)
+                    .padding(top = 40.dp),
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 IconButton(onClick = onBack) {
-                    Icon(Icons.AutoMirrored.Outlined.ArrowBack, contentDescription = "Back", tint = InkBlack)
+                    Icon(Icons.AutoMirrored.Outlined.ArrowBack, contentDescription = stringResource(
+                        R.string.back_desc
+                    ), tint = InkBlack)
                 }
                 IconButton(onClick = { confirmDelete = true }) {
-                    Icon(Icons.Outlined.Delete, contentDescription = "Delete", tint = InkBlack)
+                    Icon(Icons.Outlined.Delete, contentDescription = stringResource(R.string.delete_desc), tint = InkBlack)
                 }
             }
 
             if (entry == null) {
                 Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                     Text(
-                        "Entry not found.",
+                        stringResource(R.string.entry_not_found),
                         style = MaterialTheme.typography.bodyLarge.copy(fontStyle = FontStyle.Italic),
                         color = MutedStone
                     )
@@ -108,7 +117,7 @@ fun EntryDetailScreen(
                         Spacer(Modifier.height(32.dp))
                         AsyncImage(
                             model = entry.photoUrl,
-                            contentDescription = "Entry photo",
+                            contentDescription = stringResource(R.string.entry_photo_desc),
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .aspectRatio(4f / 3f)
@@ -128,18 +137,18 @@ fun EntryDetailScreen(
     if (confirmDelete && entry != null) {
         AlertDialog(
             onDismissRequest = { confirmDelete = false },
-            title = { Text("Delete this entry?") },
-            text = { Text("This entry will be permanently removed.") },
+            title = { Text(stringResource(R.string.delete_this_entry)) },
+            text = { Text(stringResource(R.string.delete_this_entry_alert_text)) },
             confirmButton = {
                 TextButton(onClick = {
                     confirmDelete = false
                     vm.delete(entry.id)
                     onBack()
                 }) {
-                    Text("Delete", color = MaterialTheme.colorScheme.secondary)
+                    Text(stringResource(R.string.delete_btn), color = MaterialTheme.colorScheme.secondary)
                 }
             },
-            dismissButton = { TextButton(onClick = { confirmDelete = false }) { Text("Cancel") } }
+            dismissButton = { TextButton(onClick = { confirmDelete = false }) { Text(stringResource(R.string.cancel_btn)) } }
         )
     }
 }

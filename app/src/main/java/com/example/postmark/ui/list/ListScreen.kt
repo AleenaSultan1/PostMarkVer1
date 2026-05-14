@@ -37,11 +37,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
+import com.example.postmark.R
 import com.example.postmark.auth.AuthRepository
 import com.example.postmark.data.Entry
 import com.example.postmark.ui.components.PostmarkOverflowMenu
@@ -64,23 +66,27 @@ fun ListScreen(
     var menuOpen by remember { mutableStateOf(false) }
     val user = auth.currentUser
 
-    Box(modifier = Modifier.fillMaxSize().background(Parchment)) {
+    Box(modifier = Modifier
+        .fillMaxSize()
+        .background(Parchment)) {
         Column(modifier = Modifier.fillMaxSize()) {
 
             // Header
             Row(
-                modifier = Modifier.fillMaxWidth().padding(start = 24.dp, end = 8.dp, top = 48.dp, bottom = 16.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(start = 24.dp, end = 8.dp, top = 48.dp, bottom = 16.dp),
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.Top
             ) {
                 Column {
-                    Text("WELCOME BACK", style = MaterialTheme.typography.labelMedium, color = MutedStone)
+                    Text(stringResource(R.string.welcome_back), style = MaterialTheme.typography.labelMedium, color = MutedStone)
                     Spacer(Modifier.height(4.dp))
-                    Text(user?.displayName ?: "Traveler", style = MaterialTheme.typography.headlineLarge, color = InkBlack)
+                    Text(user?.displayName ?: stringResource(R.string.name_default), style = MaterialTheme.typography.headlineLarge, color = InkBlack)
                 }
                 Box {
                     IconButton(onClick = { menuOpen = true }) {
-                        Icon(Icons.Outlined.Menu, contentDescription = "Menu", tint = InkBlack)
+                        Icon(Icons.Outlined.Menu, contentDescription = stringResource(R.string.menu_desc), tint = InkBlack)
                     }
                     PostmarkOverflowMenu(
                         expanded = menuOpen,
@@ -95,24 +101,29 @@ fun ListScreen(
 
             // Section header
             Column(modifier = Modifier.padding(horizontal = 24.dp)) {
-                Text("LATEST ENTRIES", style = MaterialTheme.typography.labelMedium, color = MutedStone)
+                Text(stringResource(R.string.latest_entries), style = MaterialTheme.typography.labelMedium, color = MutedStone)
                 Spacer(Modifier.height(8.dp))
-                Box(modifier = Modifier.fillMaxWidth().height(1.dp).background(MutedStone))
+                Box(modifier = Modifier
+                    .fillMaxWidth()
+                    .height(1.dp)
+                    .background(MutedStone))
             }
 
             Spacer(Modifier.height(12.dp))
 
             if (entries.isEmpty()) {
-                Box(modifier = Modifier.fillMaxSize().padding(top = 80.dp), contentAlignment = Alignment.TopCenter) {
+                Box(modifier = Modifier
+                    .fillMaxSize()
+                    .padding(top = 80.dp), contentAlignment = Alignment.TopCenter) {
                     Column(horizontalAlignment = Alignment.CenterHorizontally) {
                         Text(
-                            "No entries yet.",
+                            stringResource(R.string.no_entries_yet),
                             style = MaterialTheme.typography.bodyLarge.copy(fontStyle = FontStyle.Italic),
                             color = MutedStone
                         )
                         Spacer(Modifier.height(8.dp))
                         Text(
-                            "Tap the pencil to write your first.",
+                            stringResource(R.string.no_entries_yet_subtext),
                             style = MaterialTheme.typography.bodyMedium.copy(fontStyle = FontStyle.Italic),
                             color = MutedStone
                         )
@@ -138,9 +149,12 @@ fun ListScreen(
             containerColor = InkBlack,
             contentColor = Parchment,
             shape = CircleShape,
-            modifier = Modifier.align(Alignment.BottomEnd).padding(24.dp).size(56.dp)
+            modifier = Modifier
+                .align(Alignment.BottomEnd)
+                .padding(24.dp)
+                .size(56.dp)
         ) {
-            Icon(Icons.Outlined.Edit, contentDescription = "New entry")
+            Icon(Icons.Outlined.Edit, contentDescription = stringResource(R.string.new_entry_desc))
         }
     }
 }
@@ -184,7 +198,7 @@ private fun EntryCard(entry: Entry, onClick: () -> Unit) {
                     contentScale = ContentScale.Crop
                 )
             } else {
-                Text("→", color = MutedStone, fontSize = 14.sp)
+                Text(stringResource(R.string.arrow_btn), color = MutedStone, fontSize = 14.sp)
             }
         }
     }

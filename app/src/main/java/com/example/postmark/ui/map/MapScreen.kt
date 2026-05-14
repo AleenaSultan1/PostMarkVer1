@@ -41,8 +41,10 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.postmark.R
 import com.example.postmark.ui.components.PostmarkOverflowMenu
 import com.example.postmark.ui.list.EntriesViewModel
 import com.example.postmark.ui.theme.InkBlack
@@ -106,27 +108,31 @@ fun MapScreen(
         }
     }
 
-    Box(modifier = Modifier.fillMaxSize().background(Parchment)) {
+    Box(modifier = Modifier
+        .fillMaxSize()
+        .background(Parchment)) {
         Column(modifier = Modifier.fillMaxSize()) {
 
             Row(
-                modifier = Modifier.fillMaxWidth().padding(start = 24.dp, end = 8.dp, top = 48.dp, bottom = 16.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(start = 24.dp, end = 8.dp, top = 48.dp, bottom = 16.dp),
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.Top
             ) {
                 Column {
-                    Text("YOUR MAP", style = MaterialTheme.typography.labelMedium, color = MutedStone)
+                    Text(stringResource(R.string.your_map), style = MaterialTheme.typography.labelMedium, color = MutedStone)
                     Spacer(Modifier.height(4.dp))
                     val n = entries.count { it.geo != null }
                     Text(
-                        "$n ${if (n == 1) "place" else "places"}",
+                        "$n ${if (n == 1) stringResource(R.string.place) else stringResource(R.string.places)}",
                         style = MaterialTheme.typography.headlineMedium,
                         color = InkBlack
                     )
                 }
                 Box {
                     IconButton(onClick = { menuOpen = true }) {
-                        Icon(Icons.Outlined.Menu, contentDescription = "Menu", tint = InkBlack)
+                        Icon(Icons.Outlined.Menu, contentDescription = stringResource(R.string.menu_desc), tint = InkBlack)
                     }
                     PostmarkOverflowMenu(
                         expanded = menuOpen,
@@ -178,12 +184,12 @@ fun MapScreen(
                     IconButton(onClick = { 
                         scope.launch { cameraPositionState.animate(CameraUpdateFactory.zoomIn()) }
                     }) {
-                        Icon(Icons.Outlined.Add, contentDescription = "Zoom In", tint = InkBlack)
+                        Icon(Icons.Outlined.Add, contentDescription = stringResource(R.string.zoom_in_desc), tint = InkBlack)
                     }
                     IconButton(onClick = { 
                         scope.launch { cameraPositionState.animate(CameraUpdateFactory.zoomOut()) }
                     }) {
-                        Icon(Icons.Outlined.Remove, contentDescription = "Zoom Out", tint = InkBlack)
+                        Icon(Icons.Outlined.Remove, contentDescription = stringResource(R.string.zoom_out_desc), tint = InkBlack)
                     }
                 }
 
@@ -196,7 +202,7 @@ fun MapScreen(
                         .background(Color.White, RoundedCornerShape(20.dp))
                         .size(40.dp)
                 ) {
-                    Icon(Icons.Outlined.MyLocation, contentDescription = "My Location", tint = InkBlack)
+                    Icon(Icons.Outlined.MyLocation, contentDescription = stringResource(R.string.my_location_desc), tint = InkBlack)
                 }
             }
         }
@@ -206,9 +212,12 @@ fun MapScreen(
             containerColor = InkBlack,
             contentColor = Parchment,
             shape = CircleShape,
-            modifier = Modifier.align(Alignment.BottomEnd).padding(24.dp).size(56.dp)
+            modifier = Modifier
+                .align(Alignment.BottomEnd)
+                .padding(24.dp)
+                .size(56.dp)
         ) {
-            Icon(Icons.Outlined.Edit, contentDescription = "New entry")
+            Icon(Icons.Outlined.Edit, contentDescription = stringResource(R.string.new_entry_desc))
         }
     }
 }

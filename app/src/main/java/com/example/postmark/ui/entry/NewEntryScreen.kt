@@ -62,6 +62,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -70,6 +71,7 @@ import androidx.compose.ui.unit.sp
 import androidx.core.content.FileProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
+import com.example.postmark.R
 import com.example.postmark.ui.theme.InkBlack
 import com.example.postmark.ui.theme.MutedStone
 import com.example.postmark.ui.theme.PaperWhite
@@ -120,7 +122,9 @@ fun NewEntryScreen(
 
     LaunchedEffect(state.saved) { if (state.saved) onDone() }
 
-    Box(modifier = Modifier.fillMaxSize().background(Parchment)) {
+    Box(modifier = Modifier
+        .fillMaxSize()
+        .background(Parchment)) {
         Column(modifier = Modifier.fillMaxSize()) {
             // Header
             Row(
@@ -131,10 +135,10 @@ fun NewEntryScreen(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 TextButton(onClick = onDone) {
-                    Text("Cancel", color = Color(0xFF4A86E8), fontWeight = FontWeight.Medium)
+                    Text(stringResource(R.string.cancel_btn), color = Color(0xFF4A86E8), fontWeight = FontWeight.Medium)
                 }
                 Text(
-                    "New entry",
+                    stringResource(R.string.new_entry),
                     style = MaterialTheme.typography.titleMedium,
                     color = InkBlack,
                     fontWeight = FontWeight.Bold
@@ -143,7 +147,7 @@ fun NewEntryScreen(
                     onClick = { vm.save(context.contentResolver) },
                     enabled = !state.saving && state.body.isNotBlank()
                 ) {
-                    Text("Save", color = Color(0xFF4A86E8), fontWeight = FontWeight.Medium)
+                    Text(stringResource(R.string.save_btn), color = Color(0xFF4A86E8), fontWeight = FontWeight.Medium)
                 }
             }
 
@@ -152,7 +156,7 @@ fun NewEntryScreen(
 
                 // Date and Location Selector
                 SectionLabel(
-                    text = "LOCATION",
+                    text = stringResource(R.string.location_label),
                     icon = Icons.Outlined.LocationOn,
                     isExpanded = locationExpanded,
                     onToggle = { locationExpanded = !locationExpanded }
@@ -164,7 +168,7 @@ fun NewEntryScreen(
 
                         Row(modifier = Modifier.fillMaxWidth()) {
                             ModeButton(
-                                label = "Detect",
+                                label = stringResource(R.string.detect_btn),
                                 icon = Icons.Outlined.MyLocation,
                                 selected = state.locationMode == LocationMode.DETECT,
                                 modifier = Modifier.weight(1f)
@@ -177,7 +181,7 @@ fun NewEntryScreen(
                             Spacer(Modifier.width(8.dp))
 
                             ModeButton(
-                                label = "Custom",
+                                label = stringResource(R.string.custom_btn),
                                 icon = Icons.Outlined.Edit,
                                 selected = state.locationMode == LocationMode.CUSTOM,
                                 modifier = Modifier.weight(1f)
@@ -186,7 +190,7 @@ fun NewEntryScreen(
                             Spacer(Modifier.width(8.dp))
 
                             ModeButton(
-                                label = "Map",
+                                label = stringResource(R.string.map_btn),
                                 icon = Icons.Outlined.Map,
                                 selected = state.locationMode == LocationMode.MAP,
                                 modifier = Modifier.weight(1f)
@@ -201,7 +205,11 @@ fun NewEntryScreen(
                                 .fillMaxWidth()
                                 .clip(RoundedCornerShape(8.dp))
                                 .background(MutedStone.copy(alpha = 0.05f))
-                                .border(1.dp, MutedStone.copy(alpha = 0.2f), RoundedCornerShape(8.dp))
+                                .border(
+                                    1.dp,
+                                    MutedStone.copy(alpha = 0.2f),
+                                    RoundedCornerShape(8.dp)
+                                )
                                 .padding(16.dp)
                         ) {
                             if (state.locationMode == LocationMode.CUSTOM) {
@@ -213,7 +221,7 @@ fun NewEntryScreen(
                                     decorationBox = { innerTextField ->
                                         if (state.location.isEmpty()) {
                                             Text(
-                                                "Enter location...",
+                                                stringResource(R.string.enter_location),
                                                 color = MutedStone,
                                                 fontSize = 16.sp
                                             )
@@ -228,7 +236,7 @@ fun NewEntryScreen(
                                     verticalAlignment = Alignment.CenterVertically
                                 ) {
                                     Text(
-                                        text = state.location.ifBlank { "Detecting..." },
+                                        text = state.location.ifBlank { stringResource(R.string.detecting) },
                                         color = if (state.location.isBlank()) MutedStone else InkBlack,
                                         fontSize = 16.sp,
                                         modifier = Modifier.weight(1f)
@@ -248,7 +256,7 @@ fun NewEntryScreen(
                         if (state.locationMode == LocationMode.CUSTOM && state.history.isNotEmpty()) {
                             Spacer(Modifier.height(8.dp))
                             Text(
-                                "HISTORY",
+                                stringResource(R.string.history_label),
                                 style = MaterialTheme.typography.labelSmall,
                                 color = MutedStone
                             )
@@ -265,7 +273,7 @@ fun NewEntryScreen(
 
                 // Photo Picker
                 SectionLabel(
-                    text = "PHOTO",
+                    text = stringResource(R.string.photo_label),
                     icon = Icons.Outlined.Image,
                     isExpanded = photoExpanded,
                     onToggle = { photoExpanded = !photoExpanded }
@@ -289,7 +297,7 @@ fun NewEntryScreen(
                             if (state.selectedImageUri != null) {
                                 AsyncImage(
                                     model = state.selectedImageUri,
-                                    contentDescription = "Selected photo",
+                                    contentDescription = stringResource(R.string.selected_photo_desc),
                                     modifier = Modifier
                                         .fillMaxSize()
                                         .clip(RoundedCornerShape(8.dp)),
@@ -322,7 +330,7 @@ fun NewEntryScreen(
                                         TextButton(onClick = { photoPickerLauncher.launch("image/*") }) {
                                             Icon(Icons.Outlined.Collections, null, Modifier.size(18.dp))
                                             Spacer(Modifier.width(8.dp))
-                                            Text("Album", color = Color(0xFF4A86E8))
+                                            Text(stringResource(R.string.album_btn), color = Color(0xFF4A86E8))
                                         }
                                         Spacer(Modifier.width(16.dp))
                                         TextButton(onClick = {
@@ -344,7 +352,7 @@ fun NewEntryScreen(
                                                 Modifier.size(18.dp)
                                             )
                                             Spacer(Modifier.width(8.dp))
-                                            Text("Camera", color = Color(0xFF4A86E8))
+                                            Text(stringResource(R.string.camera_btn), color = Color(0xFF4A86E8))
                                         }
                                     }
                                 }
@@ -356,7 +364,7 @@ fun NewEntryScreen(
                 Spacer(Modifier.height(24.dp))
 
                 // Body Input
-                SectionLabel("ENTRY")
+                SectionLabel(stringResource(R.string.entry_label))
                 Spacer(Modifier.height(8.dp))
                 BasicTextField(
                     value = state.body,
@@ -373,7 +381,7 @@ fun NewEntryScreen(
                     decorationBox = { innerTextField ->
                         if (state.body.isEmpty()) {
                             Text(
-                                "Write something...",
+                                stringResource(R.string.write_something),
                                 style = TextStyle(
                                     fontSize = 18.sp,
                                     color = MutedStone,
@@ -420,10 +428,10 @@ fun NewEntryScreen(
                         .padding(4.dp)
                 ) {
                     IconButton(onClick = { scope.launch { cameraPositionState.animate(CameraUpdateFactory.zoomIn()) } }) {
-                        Icon(Icons.Outlined.Add, contentDescription = "Zoom In", tint = InkBlack)
+                        Icon(Icons.Outlined.Add, contentDescription = stringResource(R.string.zoom_in_desc), tint = InkBlack)
                     }
                     IconButton(onClick = { scope.launch { cameraPositionState.animate(CameraUpdateFactory.zoomOut()) } }) {
-                        Icon(Icons.Outlined.Remove, contentDescription = "Zoom Out", tint = InkBlack)
+                        Icon(Icons.Outlined.Remove, contentDescription = stringResource(R.string.zoom_out_desc), tint = InkBlack)
                     }
                     Spacer(Modifier.height(8.dp))
                     IconButton(onClick = { 
@@ -435,7 +443,7 @@ fun NewEntryScreen(
                             }
                         }
                     }) {
-                        Icon(Icons.Outlined.MyLocation, contentDescription = "My Location", tint = InkBlack)
+                        Icon(Icons.Outlined.MyLocation, contentDescription = stringResource(R.string.my_location_desc), tint = InkBlack)
                     }
                 }
                 
@@ -451,7 +459,7 @@ fun NewEntryScreen(
                         onClick = { vm.setMapExpanded(false) },
                         modifier = Modifier.background(Color.White, RoundedCornerShape(20.dp))
                     ) {
-                        Icon(Icons.Outlined.Close, contentDescription = "Close", tint = InkBlack)
+                        Icon(Icons.Outlined.Close, contentDescription = stringResource(R.string.close_desc), tint = InkBlack)
                     }
                     
                     Box(
@@ -460,7 +468,7 @@ fun NewEntryScreen(
                             .padding(horizontal = 16.dp, vertical = 8.dp)
                     ) {
                         Text(
-                            text = state.location.ifBlank { "Select Location" },
+                            text = state.location.ifBlank { stringResource(R.string.select_location) },
                             style = MaterialTheme.typography.bodyMedium,
                             color = InkBlack,
                             fontWeight = FontWeight.Bold

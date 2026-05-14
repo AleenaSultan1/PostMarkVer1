@@ -11,6 +11,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.res.stringResource
+import com.example.postmark.R
 
 /**
  * The dropdown shown when the hamburger icon is tapped on List and Map views.
@@ -29,29 +31,29 @@ fun PostmarkOverflowMenu(
 
     DropdownMenu(expanded = expanded, onDismissRequest = onDismiss) {
         DropdownMenuItem(
-            text = { Text(if (isOnListView) "Map View" else "List View") },
+            text = { Text(if (isOnListView) stringResource(R.string.map_view) else stringResource(R.string.list_view)) },
             onClick = { onDismiss(); onSwitchView() }
         )
         DropdownMenuItem(
-            text = { Text("Delete All", color = MaterialTheme.colorScheme.secondary) },
+            text = { Text(stringResource(R.string.delete_all), color = MaterialTheme.colorScheme.secondary) },
             onClick = { onDismiss(); confirmDelete = true }
         )
         if (onSignOut != null) {
-            DropdownMenuItem(text = { Text("Sign out") }, onClick = { onDismiss(); onSignOut() })
+            DropdownMenuItem(text = { Text(stringResource(R.string.sign_out)) }, onClick = { onDismiss(); onSignOut() })
         }
     }
 
     if (confirmDelete) {
         AlertDialog(
             onDismissRequest = { confirmDelete = false },
-            title = { Text("Delete all entries?") },
-            text = { Text("This cannot be undone. Every entry will be permanently removed.") },
+            title = { Text(stringResource(R.string.delete_all_entries)) },
+            text = { Text(stringResource(R.string.delete_all_entries_alert_text)) },
             confirmButton = {
                 TextButton(onClick = { confirmDelete = false; onDeleteAll() }) {
-                    Text("Delete all", color = MaterialTheme.colorScheme.secondary)
+                    Text(stringResource(R.string.delete_all_btn), color = MaterialTheme.colorScheme.secondary)
                 }
             },
-            dismissButton = { TextButton(onClick = { confirmDelete = false }) { Text("Cancel") } }
+            dismissButton = { TextButton(onClick = { confirmDelete = false }) { Text(stringResource(R.string.cancel_btn)) } }
         )
     }
 }
